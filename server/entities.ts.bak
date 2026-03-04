@@ -1,0 +1,1395 @@
+import { PrismaClient, Prisma } from '../prisma-generated/client';
+import {
+  admin_user, 
+  admin_user_uniqueKey, 
+  admin_user_without_PKs, 
+  cart, 
+  cart_item, 
+  cart_item_uniqueKey, 
+  cart_item_without_PKs, 
+  cart_uniqueKey, 
+  cart_without_PKs, 
+  category, 
+  category_uniqueKey, 
+  category_without_PKs, 
+  filtered_admin_user, 
+  filtered_cart, 
+  filtered_cart_item, 
+  filtered_category, 
+  filtered_order, 
+  filtered_order_item, 
+  filtered_product, 
+  filtered_promotion, 
+  filtered_review, 
+  filtered_user, 
+  filtered_user_address, 
+  order, 
+  order_item, 
+  order_item_uniqueKey, 
+  order_item_without_PKs, 
+  order_uniqueKey, 
+  order_without_PKs, 
+  product, 
+  product_uniqueKey, 
+  product_without_PKs, 
+  promotion, 
+  promotion_uniqueKey, 
+  promotion_without_PKs, 
+  review, 
+  review_uniqueKey, 
+  review_without_PKs, 
+  user, 
+  user_address, 
+  user_address_uniqueKey, 
+  user_address_without_PKs, 
+  user_uniqueKey, 
+  user_without_PKs,
+  Entities
+} from './entities.type';
+
+export const prisma = new PrismaClient();
+
+export const default_entities: Entities = {
+  user: {
+    /**
+        * 创建user记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: user_without_PKs): Promise<user | null> => {
+            try {
+                return await prisma.user.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating user:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: user_uniqueKey): Promise<user | null> => {
+            try {
+                return await prisma.user.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting user:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_user)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_user): Promise<user[]> => {
+            try {
+                return await prisma.user.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all user:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_user)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_user
+        ): Promise<user[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.user.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged user:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_user)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_user): Promise<number> => {
+            try {
+                return await prisma.user.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting user:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: user_uniqueKey; data: user_without_PKs }): Promise<user | null> => {
+            try {
+                return await prisma.user.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating user:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: user_uniqueKey): Promise<user | null> => {
+            try {
+                return await prisma.user.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting user:`, error);
+                return null;
+            }
+        },  },
+  admin_user: {
+    /**
+        * 创建admin_user记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: admin_user_without_PKs): Promise<admin_user | null> => {
+            try {
+                return await prisma.admin_user.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating admin_user:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: admin_user_uniqueKey): Promise<admin_user | null> => {
+            try {
+                return await prisma.admin_user.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting admin_user:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_admin_user)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_admin_user): Promise<admin_user[]> => {
+            try {
+                return await prisma.admin_user.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all admin_user:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_admin_user)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_admin_user
+        ): Promise<admin_user[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.admin_user.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged admin_user:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_admin_user)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_admin_user): Promise<number> => {
+            try {
+                return await prisma.admin_user.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting admin_user:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: admin_user_uniqueKey; data: admin_user_without_PKs }): Promise<admin_user | null> => {
+            try {
+                return await prisma.admin_user.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating admin_user:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: admin_user_uniqueKey): Promise<admin_user | null> => {
+            try {
+                return await prisma.admin_user.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting admin_user:`, error);
+                return null;
+            }
+        },  },
+  category: {
+    /**
+        * 创建category记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: category_without_PKs): Promise<category | null> => {
+            try {
+                return await prisma.category.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating category:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: category_uniqueKey): Promise<category | null> => {
+            try {
+                return await prisma.category.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting category:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_category)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_category): Promise<category[]> => {
+            try {
+                return await prisma.category.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all category:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_category)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_category
+        ): Promise<category[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.category.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged category:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_category)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_category): Promise<number> => {
+            try {
+                return await prisma.category.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting category:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: category_uniqueKey; data: category_without_PKs }): Promise<category | null> => {
+            try {
+                return await prisma.category.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating category:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: category_uniqueKey): Promise<category | null> => {
+            try {
+                return await prisma.category.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting category:`, error);
+                return null;
+            }
+        },  },
+  product: {
+    /**
+        * 创建product记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: product_without_PKs): Promise<product | null> => {
+            try {
+                return await prisma.product.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating product:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: product_uniqueKey): Promise<product | null> => {
+            try {
+                return await prisma.product.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting product:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_product)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_product): Promise<product[]> => {
+            try {
+                return await prisma.product.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all product:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_product)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_product
+        ): Promise<product[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.product.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged product:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_product)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_product): Promise<number> => {
+            try {
+                return await prisma.product.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting product:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: product_uniqueKey; data: product_without_PKs }): Promise<product | null> => {
+            try {
+                return await prisma.product.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating product:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: product_uniqueKey): Promise<product | null> => {
+            try {
+                return await prisma.product.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting product:`, error);
+                return null;
+            }
+        },  },
+  cart: {
+    /**
+        * 创建cart记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: cart_without_PKs): Promise<cart | null> => {
+            try {
+                return await prisma.cart.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating cart:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: cart_uniqueKey): Promise<cart | null> => {
+            try {
+                return await prisma.cart.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting cart:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_cart)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_cart): Promise<cart[]> => {
+            try {
+                return await prisma.cart.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all cart:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_cart)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_cart
+        ): Promise<cart[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.cart.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged cart:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_cart)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_cart): Promise<number> => {
+            try {
+                return await prisma.cart.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting cart:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: cart_uniqueKey; data: cart_without_PKs }): Promise<cart | null> => {
+            try {
+                return await prisma.cart.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating cart:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: cart_uniqueKey): Promise<cart | null> => {
+            try {
+                return await prisma.cart.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting cart:`, error);
+                return null;
+            }
+        },  },
+  cart_item: {
+    /**
+        * 创建cart_item记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: cart_item_without_PKs): Promise<cart_item | null> => {
+            try {
+                return await prisma.cart_item.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating cart_item:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: cart_item_uniqueKey): Promise<cart_item | null> => {
+            try {
+                return await prisma.cart_item.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting cart_item:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_cart_item)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_cart_item): Promise<cart_item[]> => {
+            try {
+                return await prisma.cart_item.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all cart_item:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_cart_item)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_cart_item
+        ): Promise<cart_item[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.cart_item.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged cart_item:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_cart_item)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_cart_item): Promise<number> => {
+            try {
+                return await prisma.cart_item.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting cart_item:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: cart_item_uniqueKey; data: cart_item_without_PKs }): Promise<cart_item | null> => {
+            try {
+                return await prisma.cart_item.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating cart_item:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: cart_item_uniqueKey): Promise<cart_item | null> => {
+            try {
+                return await prisma.cart_item.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting cart_item:`, error);
+                return null;
+            }
+        },  },
+  order: {
+    /**
+        * 创建order记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: order_without_PKs): Promise<order | null> => {
+            try {
+                return await prisma.order.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating order:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: order_uniqueKey): Promise<order | null> => {
+            try {
+                return await prisma.order.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting order:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_order)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_order): Promise<order[]> => {
+            try {
+                return await prisma.order.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all order:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_order)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_order
+        ): Promise<order[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.order.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged order:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_order)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_order): Promise<number> => {
+            try {
+                return await prisma.order.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting order:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: order_uniqueKey; data: order_without_PKs }): Promise<order | null> => {
+            try {
+                return await prisma.order.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating order:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: order_uniqueKey): Promise<order | null> => {
+            try {
+                return await prisma.order.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting order:`, error);
+                return null;
+            }
+        },  },
+  order_item: {
+    /**
+        * 创建order_item记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: order_item_without_PKs): Promise<order_item | null> => {
+            try {
+                return await prisma.order_item.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating order_item:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: order_item_uniqueKey): Promise<order_item | null> => {
+            try {
+                return await prisma.order_item.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting order_item:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_order_item)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_order_item): Promise<order_item[]> => {
+            try {
+                return await prisma.order_item.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all order_item:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_order_item)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_order_item
+        ): Promise<order_item[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.order_item.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged order_item:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_order_item)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_order_item): Promise<number> => {
+            try {
+                return await prisma.order_item.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting order_item:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: order_item_uniqueKey; data: order_item_without_PKs }): Promise<order_item | null> => {
+            try {
+                return await prisma.order_item.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating order_item:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: order_item_uniqueKey): Promise<order_item | null> => {
+            try {
+                return await prisma.order_item.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting order_item:`, error);
+                return null;
+            }
+        },  },
+  user_address: {
+    /**
+        * 创建user_address记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: user_address_without_PKs): Promise<user_address | null> => {
+            try {
+                return await prisma.user_address.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating user_address:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: user_address_uniqueKey): Promise<user_address | null> => {
+            try {
+                return await prisma.user_address.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting user_address:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_user_address)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_user_address): Promise<user_address[]> => {
+            try {
+                return await prisma.user_address.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all user_address:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_user_address)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_user_address
+        ): Promise<user_address[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.user_address.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged user_address:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_user_address)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_user_address): Promise<number> => {
+            try {
+                return await prisma.user_address.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting user_address:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: user_address_uniqueKey; data: user_address_without_PKs }): Promise<user_address | null> => {
+            try {
+                return await prisma.user_address.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating user_address:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: user_address_uniqueKey): Promise<user_address | null> => {
+            try {
+                return await prisma.user_address.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting user_address:`, error);
+                return null;
+            }
+        },  },
+  review: {
+    /**
+        * 创建review记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: review_without_PKs): Promise<review | null> => {
+            try {
+                return await prisma.review.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating review:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: review_uniqueKey): Promise<review | null> => {
+            try {
+                return await prisma.review.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting review:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_review)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_review): Promise<review[]> => {
+            try {
+                return await prisma.review.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all review:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_review)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_review
+        ): Promise<review[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.review.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged review:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_review)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_review): Promise<number> => {
+            try {
+                return await prisma.review.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting review:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: review_uniqueKey; data: review_without_PKs }): Promise<review | null> => {
+            try {
+                return await prisma.review.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating review:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: review_uniqueKey): Promise<review | null> => {
+            try {
+                return await prisma.review.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting review:`, error);
+                return null;
+            }
+        },  },
+  promotion: {
+    /**
+        * 创建promotion记录
+        * @param data 不含主键的数据 (主键自动生成)
+        * @returns 创建的记录或null
+        */
+        Create: async (data: promotion_without_PKs): Promise<promotion | null> => {
+            try {
+                return await prisma.promotion.create({
+                    data: data 
+                });
+            } catch (error) {
+                console.error(`Error creating promotion:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 根据主键获取记录
+        * @param args 主键参数
+        * @returns 记录或null
+        */
+        Get: async (args: promotion_uniqueKey): Promise<promotion | null> => {
+            try {
+                return await prisma.promotion.findUnique({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error getting promotion:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 获取所有记录
+        * @param args 可选筛选条件 (类型: filtered_promotion)
+        * @returns 记录数组
+        */
+        GetAll: async (args?: filtered_promotion): Promise<promotion[]> => {
+            try {
+                return await prisma.promotion.findMany({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error getting all promotion:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 分页获取记录
+        * @param pageNumber 页码 (默认 1)
+        * @param pageSize 每页大小 (默认 10)
+        * @param args 可选筛选条件 (类型: filtered_promotion)
+        * @returns 分页记录数组
+        */
+        GetPage: async (
+            pageNumber: number = 1,
+            pageSize: number = 10,
+            args?: filtered_promotion
+        ): Promise<promotion[]> => {
+            try {
+                const skip = (pageNumber - 1) * pageSize;
+                return await prisma.promotion.findMany({
+                    where: args as any, 
+                    skip,
+                    take: pageSize,
+                });
+            } catch (error) {
+                console.error(`Error getting paged promotion:`, error);
+                return [];
+            }
+        },
+
+    /**
+        * 统计记录数
+        * @param args 可选筛选条件 (类型: filtered_promotion)
+        * @returns 记录数量
+        */
+        Count: async (args?: filtered_promotion): Promise<number> => {
+            try {
+                return await prisma.promotion.count({
+                    where: args as any, 
+                });
+            } catch (error) {
+                console.error(`Error counting promotion:`, error);
+                return 0;
+            }
+        },
+
+    /**
+        * 更新记录
+        * @param args 包含主键 (where) 和更新数据 (data)
+        * @returns 更新后的记录或null
+        */
+        Update: async (args: { where: promotion_uniqueKey; data: promotion_without_PKs }): Promise<promotion | null> => {
+            try {
+                return await prisma.promotion.update({
+                    where: { id: args.where.id },
+                    data: args.data 
+                });
+            } catch (error) {
+                console.error(`Error updating promotion:`, error);
+                return null;
+            }
+        },
+
+    /**
+        * 删除记录
+        * @param args 主键参数
+        * @returns 删除的记录或null
+        */
+        Delete: async (args: promotion_uniqueKey): Promise<promotion | null> => {
+            try {
+                return await prisma.promotion.delete({
+                    where: { id: args.id },
+                });
+            } catch (error) {
+                console.error(`Error deleting promotion:`, error);
+                return null;
+            }
+        },  },
+};

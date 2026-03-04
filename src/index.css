@@ -1,0 +1,215 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+/* 尺寸与间距变量 */
+
+@layer base {
+  html, body { height: 100%; }
+  body { 
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply antialiased;
+  }
+
+  h1 { 
+    @apply text-3xl sm:text-4xl lg:text-5xl leading-tight;
+  }
+  h2 { 
+    @apply text-2xl sm:text-3xl lg:text-4xl leading-tight;
+  }
+  h3 { 
+    @apply text-xl sm:text-2xl leading-snug;
+  }
+  p { 
+    @apply text-base leading-7;
+    /* color: var(--color-muted-foreground); */
+  }
+}
+
+
+/* 覆盖默认的颜色类名，映射到语义化配色 */
+@layer utilities {
+  .gap-content { gap: var(--content-gap); }
+  
+  /* 使用CSS变量的primary相关类，确保主题色正确应用 */
+  .bg-primary { background-color: var(--color-primary); }
+  .text-primary { color: var(--color-primary); }
+  .text-primary-foreground { color: var(--color-primary-foreground); }
+  .border-primary { border-color: var(--color-primary); }
+  
+  
+  /* 其他语义色的utilities */
+  .bg-secondary { background-color: var(--color-secondary); }
+  .text-secondary { color: var(--color-secondary); }
+  .text-secondary-foreground { color: var(--color-secondary-foreground); }
+  .border-secondary { border-color: var(--color-secondary); }  
+  
+  .bg-accent { background-color: var(--color-accent); }
+  .text-accent { color: var(--color-accent); }
+  .text-accent-foreground { color: var(--color-accent-foreground); }
+  .border-accent { border-color: var(--color-accent); } 
+  
+  .bg-destructive { background-color: var(--color-destructive); }
+  .text-destructive { color: var(--color-destructive); }
+  .text-destructive-foreground { color: var(--color-destructive-foreground); }
+  .border-destructive { border-color: var(--color-destructive); }
+  
+  .bg-success { background-color: var(--color-success); }
+  .text-success { color: var(--color-success); }
+  .text-success-foreground { color: var(--color-success-foreground); }
+  .border-success { border-color: var(--color-success); }
+  
+  .bg-warning { background-color: var(--color-warning); }
+  .text-warning { color: var(--color-warning); }
+  .text-warning-foreground { color: var(--color-warning-foreground); }
+  .border-warning { border-color: var(--color-warning); }
+  
+  .bg-info { background-color: var(--color-info); }
+  .text-info { color: var(--color-info); }
+  .text-info-foreground { color: var(--color-info-foreground); }
+  .border-info { border-color: var(--color-info); }
+  
+  /* 中性色utilities */
+  .bg-muted { background-color: var(--color-muted); }
+  .text-muted { color: var(--color-muted); }
+  .text-muted-foreground { color: var(--color-muted-foreground); }
+  .border-muted { border-color: var(--color-muted); } 
+  
+  /* 增强 ToggleGroupItem 的选中状态对比度 - 完全使用主题色变量 */
+  .data-\[state\=on\]\:bg-primary[data-state="on"] { 
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--color-foreground) 10%, transparent);
+  }
+  
+  /* 未选中状态的样式 - 使用muted色 */
+  [data-radix-collection-item][data-state="off"] {
+    background-color: var(--color-muted);
+    color: var(--color-muted-foreground);
+    border: 1px solid var(--color-border);
+  }
+  
+  [data-radix-collection-item][data-state="off"]:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+  
+  /* 禁用状态的样式 */
+  [data-radix-collection-item][data-disabled] {
+    background-color: color-mix(in srgb, var(--color-muted) 50%, transparent);
+    color: color-mix(in srgb, var(--color-muted-foreground) 50%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+    cursor: not-allowed;
+  }
+  
+  /* 输入框和表单元素 */
+  .bg-input { background-color: var(--color-input); }
+  .border-input { border-color: var(--color-input); }
+  
+  /* 卡片相关 */
+  .bg-card { background-color: var(--color-card); }
+  .text-card-foreground { color: var(--color-card-foreground); }
+  .border-card { border-color: var(--color-border); }
+  
+  /* 弹出层相关 */
+  .bg-popover { background-color: var(--color-popover); }
+  .text-popover-foreground { color: var(--color-popover-foreground); }
+  .border-popover { border-color: var(--color-popover); }
+  
+  /* 焦点环 */
+  .ring-primary { ring-color: var(--color-ring); }
+  .focus\:ring-primary:focus { ring-color: var(--color-ring); }
+  
+  /* 阴影系统 - 使用前景色作为阴影基色 */
+  .shadow-sm { box-shadow: 0 1px 2px 0 color-mix(in srgb, var(--color-foreground) 5%, transparent); }
+  .shadow { box-shadow: 0 1px 3px 0 color-mix(in srgb, var(--color-foreground) 10%, transparent), 0 1px 2px -1px color-mix(in srgb, var(--color-foreground) 10%, transparent); }
+  .shadow-md { box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--color-foreground) 10%, transparent), 0 2px 4px -2px color-mix(in srgb, var(--color-foreground) 10%, transparent); }
+  .shadow-lg { box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--color-foreground) 10%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--color-foreground) 10%, transparent); }
+  .shadow-xl { box-shadow: 0 20px 25px -5px color-mix(in srgb, var(--color-foreground) 10%, transparent), 0 8px 10px -6px color-mix(in srgb, var(--color-foreground) 10%, transparent); }
+  .shadow-2xl { box-shadow: 0 25px 50px -12px color-mix(in srgb, var(--color-foreground) 25%, transparent); }
+  
+  /* 背景和前景基础色 */
+  .text-foreground { color: var(--color-foreground); }
+  .border-border { border-color: var(--color-border); }
+  [data-slot="chart"] .recharts-cartesian-axis-tick text {
+    fill: var(--color-muted-foreground) !important;
+  }
+}
+
+
+@layer utilities {
+  .text-display {
+    font-family: var(--font-header);
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .text-h1 {
+    font-family: var(--font-header);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .text-h2 {
+    font-family: var(--font-header);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+    letter-spacing: var(--letter-spacing-normal);
+  }
+
+  .text-h3 {
+    font-family: var(--font-header);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+  }
+
+  .text-h4 {
+    font-family: var(--font-header);
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Body Base */
+  .text-base {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-loose);
+    letter-spacing: var(--letter-spacing-base);
+  }
+
+  /* Body Small / Caption */
+  .text-caption {
+    font-family: var(--font-body);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-relaxed);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+  
+  /* Additional utility for "Body Small" from spec (16px) */
+  .text-sm-body {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm-body);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-loose);
+  }
+
+  /* 布局工具类保持 */
+  .gap-content { gap: 8px; }
+  
+  /* Toggle Group 覆盖逻辑 - 使用颜色变量 */
+  .data-\[state\=on\]\:bg-primary[data-state="on"] { 
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    border: 2px solid var(--color-primary);
+  }
+}
+

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+      "module": "CommonJS",
+      "strict": true,
+      "esModuleInterop": true,
+      "composite": true,
+      "skipLibCheck": true,
+      "noUnusedParameters": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist_server",
+
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["./src/*"]
+      }
+  },
+  "include": ["server"],
+  "exclude": [
+    "pnpm_node_modules",
+    "dist",
+    "src" 
+  ]
+}
