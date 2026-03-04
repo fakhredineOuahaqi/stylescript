@@ -36,7 +36,7 @@ const productSchema = z.object({
   sale_price: z.coerce.number().optional(),
   stock_quantity: z.coerce.number().int().min(0, 'Stock cannot be negative'),
   status: z.enum(['active', 'inactive', 'out_of_stock']),
-  cover_image_url: z.string().optional(),
+  cover_image_url: z.string().url('Cover image must be a valid URL').or(z.literal('')).optional(),
   description_short: z.string().optional(),
   description_long: z.string().optional(),
   available_sizes: z.string().optional(),
@@ -44,6 +44,16 @@ const productSchema = z.object({
   image_url_list: z.string().optional()
 });
 type ProductFormValues = z.infer<typeof productSchema>;
+
+declare global {
+  interface Window {
+    cloudinary?: {
+      createUploadWidget: (options: Record<string, unknown>, callback: (error: unknown, result: any) => void) => {
+        open: () => void;
+      };
+    };
+  }
+}
 
 // --- Components ---
 
@@ -114,21 +124,48 @@ export default function ProductManagementPage_ProductTableAndCRUD() {
 
   // --- Handlers ---
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select a valid image file');
+  const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+  const canUseCloudinary = !!cloudinaryCloudName && !!cloudinaryUploadPreset;
+  const isValidHttpUrl = (value: string) => {
+    try {
+      const u = new URL(value);
+      return u.protocol === 'https:' || u.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  };
+  const handleCloudinaryUpload = () => {
+    if (!canUseCloudinary) {
+      toast.error('Cloudinary is not configured. Set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET.');
       return;
     }
-
-    // Simulate async upload
-    toast.info('Uploading image...');
-    setTimeout(() => {
-      const placeholderUrl = 'https://placehold.co/600x400/png';
-      form.setValue('cover_image_url', placeholderUrl);
-      toast.success('Image uploaded successfully');
-    }, 1000);
+    if (!window.cloudinary?.createUploadWidget) {
+      toast.error('Upload widget not loaded yet. Please retry in a moment.');
+      return;
+    }
+    const widget = window.cloudinary.createUploadWidget({
+      cloudName: cloudinaryCloudName,
+      uploadPreset: cloudinaryUploadPreset,
+      sources: ['local', 'url', 'camera'],
+      resourceType: 'image',
+      multiple: false,
+      maxFileSize: 5_000_000,
+      clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp']
+    }, (error, result) => {
+      if (error) {
+        toast.error('Upload failed. Please try again.');
+        return;
+      }
+      if (result?.event === 'success' && result?.info?.secure_url) {
+        form.setValue('cover_image_url', result.info.secure_url, {
+          shouldDirty: true,
+          shouldValidate: true
+        });
+        toast.success('Image uploaded successfully');
+      }
+    });
+    widget.open();
   };
   const toggleSelection = (currentValue: string, item: string): string => {
     const items = currentValue.split(',').map((s, index) => s.trim()).filter(s => s.length > 0);
@@ -168,7 +205,7 @@ export default function ProductManagementPage_ProductTableAndCRUD() {
     setEditingProduct(product);
 
     // Initialize carousel images from product data
-    const imageList = product.image_url_list ? product.image_url_list.split(',').map((url, index) => url.trim()).filter(url => url.length > 0) : [];
+    const imageList = product.image_url_list ? product.image_url_list.split('|').map((url, index) => url.trim()).filter(url => url.length > 0) : [];
     setCarouselImages(imageList);
     form.reset({
       title: product.title,
@@ -194,8 +231,8 @@ export default function ProductManagementPage_ProductTableAndCRUD() {
       return;
     }
 
-    // Join carousel images array to comma-separated string
-    const imageUrlList = carouselImages.length > 0 ? carouselImages.join(',') : null;
+    // Join carousel images array to pipe-separated string
+    const imageUrlList = carouselImages.length > 0 ? carouselImages.join('|') : null;
     try {
       if (editingProduct) {
         // Update
@@ -467,9 +504,15 @@ export default function ProductManagementPage_ProductTableAndCRUD() {
                     </div>
                     <div className="text-center mb-4">
                       <p className="text-sm font-medium text-slate-900">Upload product image</p>
-                      <p className="text-xs text-slate-500 mt-1">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                      <p className="text-xs text-slate-500 mt-1">Cloudinary widget upload (max 5MB, png/jpg/jpeg/webp)</p>
                     </div>
-                    <Input type="file" accept="image/*" onChange={handleImageUpload} className="max-w-sm" />
+                    <Button type="button" variant="outline" className="max-w-sm" onClick={handleCloudinaryUpload}>
+                      <UploadCloud className="h-4 w-4 mr-2" />
+                      Upload with Cloudinary
+                    </Button>
+                    {!canUseCloudinary && <p className="text-xs text-amber-600 max-w-sm text-center">
+                        Cloudinary env vars are missing. Use URL paste mode for now.
+                      </p>}
                     {form.watch('cover_image_url') && <div className="mt-4 w-full max-w-sm">
                         <div className="relative w-full h-32 rounded-lg overflow-hidden border border-slate-200">
                           <img src={form.watch('cover_image_url')} alt="Preview" className="w-full h-full object-cover" />
@@ -479,7 +522,8 @@ export default function ProductManagementPage_ProductTableAndCRUD() {
                  <div className="space-y-2">
                    <Label htmlFor="cover_image_url">Or paste image URL</Label>
                    <Input id="cover_image_url" {...form.register('cover_image_url')} placeholder="https://example.com/image.jpg" />
-                   <p className="text-xs text-slate-500">Direct image URL as fallback option</p>
+                   <p className="text-xs text-slate-500">Use HTTPS image URLs for production</p>
+                   {form.watch('cover_image_url') && !isValidHttpUrl(form.watch('cover_image_url') || '') && <p className="text-xs text-red-500">Please enter a valid HTTP/HTTPS image URL.</p>}
                  </div>
               </div>
 
@@ -495,23 +539,40 @@ export default function ProductManagementPage_ProductTableAndCRUD() {
                       e.preventDefault();
                       const input = e.currentTarget;
                       const url = input.value.trim();
-                      if (url && !carouselImages.includes(url)) {
+                      if (url && isValidHttpUrl(url) && !carouselImages.includes(url)) {
                         setCarouselImages([...carouselImages, url]);
                         input.value = '';
                         toast.success('Image added to carousel');
+                      } else if (url && !isValidHttpUrl(url)) {
+                        toast.error('Please add a valid image URL');
                       }
                     }
                   }} />
                     <Button type="button" variant="outline" onClick={() => {
                     const input = document.getElementById('carousel_image_input') as HTMLInputElement;
                     const url = input?.value.trim();
-                    if (url && !carouselImages.includes(url)) {
+                    if (url && isValidHttpUrl(url) && !carouselImages.includes(url)) {
                       setCarouselImages([...carouselImages, url]);
                       input.value = '';
                       toast.success('Image added to carousel');
+                    } else if (url && !isValidHttpUrl(url)) {
+                      toast.error('Please add a valid image URL');
                     }
                   }}>
                       <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                    <Button type="button" variant="ghost" onClick={() => {
+                    const cover = form.watch('cover_image_url')?.trim();
+                    if (!cover || !isValidHttpUrl(cover)) {
+                      toast.error('Set a valid cover image URL first.');
+                      return;
+                    }
+                    if (!carouselImages.includes(cover)) {
+                      setCarouselImages([...carouselImages, cover]);
+                      toast.success('Cover image added to carousel.');
+                    }
+                  }}>
+                      Use cover image
                     </Button>
                   </div>
                   
