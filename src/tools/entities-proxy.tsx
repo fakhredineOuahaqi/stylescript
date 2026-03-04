@@ -8,8 +8,19 @@ type EntityMethod = {
 class EntitiesProxy {
   private baseUrl: string;
 
-  constructor(baseUrl: string = "http://localhost:3001/BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835/api/entities") {
-    this.baseUrl = baseUrl;
+  constructor(baseUrl?: string) {
+    this.baseUrl = baseUrl ?? this.resolveBaseUrl();
+  }
+
+  private resolveBaseUrl(): string {
+    const explicitEndpoint = process.env.NEXT_PUBLIC_ENTITIES_ENDPOINT;
+    if (explicitEndpoint) return explicitEndpoint;
+
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (apiBase) return `${apiBase.replace(/\/$/, '')}/api/entities`;
+
+    const backendPath = process.env.NEXT_PUBLIC_BACKEND_BASE_PATH || '/BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835';
+    return `http://localhost:3001${backendPath}/api/entities`;
   }
 
   public getProxy(): Entities {

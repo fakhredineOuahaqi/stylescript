@@ -72,3 +72,69 @@ This project is built with:
 - **Prisma** — Database ORM
 - **shadcn/ui** — UI components (Radix UI)
 - **Lucide React** — Icons
+
+---
+
+## Production readiness updates
+
+The project now supports environment-driven backend connectivity and deployment-safe defaults:
+
+- Frontend entities endpoint can be configured via:
+  - `NEXT_PUBLIC_ENTITIES_ENDPOINT` (full endpoint, highest priority), or
+  - `NEXT_PUBLIC_API_BASE_URL` (base URL, app appends `/api/entities`).
+- Backend mount path is configurable with `BACKEND_BASE_PATH`.
+- Backend CORS allowlist is configurable with `CORS_ORIGIN` (comma-separated origins).
+- Backend includes a health endpoint at `/healthz`.
+
+Use `.env.example` as the reference for all required variables.
+
+---
+
+## Deploy to Render (free tier)
+
+This repo includes a `render.yaml` blueprint that defines:
+
+- `stylescript-api` (Node web service for Express backend)
+- `stylescript-web` (Static site for Next export `out/`)
+
+### 1) Prepare external database
+
+Render free tier does not provide free MySQL by default. You should:
+
+- use an external MySQL provider (PlanetScale/Aiven/etc.), or
+- migrate to PostgreSQL in Prisma before deployment.
+
+Set `DATABASE_URL` for the API service.
+
+### 2) Create services from blueprint
+
+1. Push this repo to GitHub.
+2. In Render, choose **New +** → **Blueprint**.
+3. Select this repo so Render reads `render.yaml`.
+
+### 3) Set required env vars in Render
+
+For `stylescript-api`:
+
+- `DATABASE_URL`
+- `CORS_ORIGIN` (set to your frontend URL, e.g. `https://stylescript-web.onrender.com`)
+- optionally adjust `BACKEND_BASE_PATH`
+
+For `stylescript-web`:
+
+- `NEXT_PUBLIC_API_BASE_URL` = `<api-public-url><BACKEND_BASE_PATH>`
+  - e.g. `https://stylescript-api.onrender.com/BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835`
+- Cloudinary public vars if you use image upload widget:
+  - `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
+  - `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`
+
+### 4) Validate after deploy
+
+- API health: `https://<api-domain>/healthz`
+- Frontend loads data from products/categories
+- Admin add-product image upload works via Cloudinary widget
+
+### Notes
+
+- Current auth/session is localStorage token-based (demo style). For stricter production security, move to server-validated JWT/cookie sessions.
+- If you serve frontend and backend on different domains, keep `CORS_ORIGIN` strict and explicit.

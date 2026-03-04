@@ -20,7 +20,7 @@ router.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ error: '模块内部错误' });
 });
 
-export const path = '/BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835';
+export const path = process.env.BACKEND_BASE_PATH || '/BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835';
 
 // 或者导出为对象
 const routeModule = {
