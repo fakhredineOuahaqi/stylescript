@@ -7,11 +7,9 @@ interface RootLayoutProps {
 export default function RootLayout({
   children
 }: RootLayoutProps) {
-  return <html lang="en">
-      <body className="antialiased">
-        <Navigation />
-        {children}
-        <Footer />
-      </body>
-    </html>;
+  return <>
+      <Navigation />
+      <div className="antialiased">{children}</div>
+      <Footer />
+    </>;
 }
