@@ -8,7 +8,8 @@
     "start": "next start",
     "server": "npx ts-node-dev --project server/tsconfig.json server/start.ts",
     "lint": "eslint --cache",
-    "init": "pnpm install && node backend_deal.mjs"
+    "init": "pnpm install && node backend_deal.mjs",
+    "server:prod": "npx ts-node --project server/tsconfig.json server/start.ts"
   },
   "prisma": {
     "seed": "ts-node --transpile-only prisma/seed.ts"

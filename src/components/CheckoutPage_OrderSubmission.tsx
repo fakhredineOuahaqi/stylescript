@@ -76,7 +76,7 @@ export default function CheckoutPage_OrderSubmission() {
         // 1. Check Session
         if (!session || !session.userId) {
           toast.error("Please login to proceed with checkout.");
-          router.push('/loginpage'); // Assuming login page exists
+          router.push('/frontendloginpage');
           return;
         }
         const currentUserId = parseInt(session.userId);

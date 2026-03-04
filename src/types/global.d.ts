@@ -71,9 +71,16 @@ declare module '*.module.less' {
 declare namespace NodeJS {
   interface ProcessEnv {
     NEXT_PUBLIC_API_BASE_URL: string;
+    NEXT_PUBLIC_ENTITIES_ENDPOINT?: string;
+    NEXT_PUBLIC_BACKEND_BASE_PATH?: string;
     NEXT_PUBLIC_BASE_PATH?: string;
     NEXT_PUBLIC_PROJECT_ID?: string;
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?: string;
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME?: string;
+    NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET?: string;
     DATABASE_URL: string;
+    BACKEND_BASE_PATH?: string;
+    CORS_ORIGIN?: string;
+    PORT?: string;
   }
 }

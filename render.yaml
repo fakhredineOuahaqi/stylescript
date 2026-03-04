@@ -1,0 +1,46 @@
+services:
+  # Backend API service
+  - type: web
+    name: stylescript-api
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: pnpm install --frozen-lockfile=false
+    startCommand: pnpm run server:prod
+    autoDeploy: true
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 3001
+      - key: BACKEND_BASE_PATH
+        value: /BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835
+      # Set these in Render dashboard
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+
+  # Frontend static site (Next export output)
+  - type: static
+    name: stylescript-web
+    rootDir: .
+    buildCommand: pnpm install --frozen-lockfile=false && pnpm run build
+    staticPublishPath: out
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NEXT_PUBLIC_SITE_TITLE
+        value: Shop Demo
+      - key: NEXT_PUBLIC_BACKEND_BASE_PATH
+        value: /BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835
+      # Set this to your backend public URL + BACKEND_BASE_PATH (no trailing slash)
+      # Example: https://stylescript-api.onrender.com/BACKEND_PROJ_d6d2bb86_snap_20260304_033524_835
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+        sync: false
